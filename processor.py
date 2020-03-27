@@ -3,7 +3,18 @@ def choose_action():
             1. Add matrices
             2. Multiply matrix by a constant
             3. Multiply matrices
+            4. Transpose matrix
             0. Exit
+            Your choice: '''
+    return input(options)
+
+
+def choose_transposition():
+    options = '''
+            1. Main diagonal
+            2. Side diagonal
+            3. Vertical line
+            4. Horizontal line
             Your choice: '''
     return input(options)
 
@@ -62,6 +73,31 @@ def multiply_matrices(matrix_a, matrix_b):
     return matrices_multiplied
 
 
+def transpose_vertical(matrix):
+    for row in matrix:
+        row.reverse()
+    return matrix
+
+
+def transpose_horizontal(matrix):
+    matrix.reverse()
+    return matrix
+
+
+def transpose_main_diagonal(matrix):
+    matrix_transposed = []
+    for column in range(0, len(matrix[0])):
+        matrix_transposed.append([])
+        for row in range(0, len(matrix)):
+            matrix_transposed[column].append(matrix[row][column])
+    return matrix_transposed
+
+
+def transpose_side_diagonal(matrix):
+    matrix_transposed = transpose_horizontal(transpose_vertical(transpose_main_diagonal(matrix)))
+    return matrix_transposed
+
+
 def print_matrix(matrix):
     print('The result is: ')
     if matrix[0][0].is_integer():
@@ -113,6 +149,20 @@ def main():
             else:
                 matrices_multiplied = multiply_matrices(matrix_a, matrix_b)
                 print_matrix(matrices_multiplied)
+        elif action == '4':
+            transposition_type = choose_transposition()
+            rows, columns = map(int, input('Enter matrix size: ').split())
+            print('Enter matrix: ')
+            matrix = construct_matrix(rows, columns)
+            if transposition_type == '1':
+                matrix_transposed = transpose_main_diagonal(matrix)
+            elif transposition_type == '2':
+                matrix_transposed = transpose_side_diagonal(matrix)
+            elif transposition_type == '3':
+                matrix_transposed = transpose_vertical(matrix)
+            elif transposition_type == '4':
+                matrix_transposed = transpose_horizontal(matrix)
+            print_matrix(matrix_transposed)
 
 
 main()
